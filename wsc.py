@@ -1,9 +1,19 @@
 import torch
 from torchvision.io import read_image
+import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import glob
 import os
+
+LABELS_TO_NUMS = {'Angle': 0,
+                  'Box': 1,
+                  'Circle': 2,
+                  'Closeup': 3,
+                  'Crowd': 4,
+                  'Other': 5}
+
+NUMS_TO_LABELS = {val: key for key, val in LABELS_TO_NUMS.items()}
 
 class WscDataset(Dataset):
     def __init__(self, annotations_file, img_dir, transform=None, target_transform=None):
@@ -43,10 +53,14 @@ def make_csv():
             df = pd.DataFrame({"label": labels, "image": images})
             df.to_csv(annotations_file)
 
-
-
-
-if __name__ == "__main__":
+def main():
     make_csv()
-    training_data = WscDataset('train/labeled_data.csv', 'train')
-    validation_data = WscDataset('test/labeled_data.csv', 'test')
+    training_data = WscDataset('train/labeled_data.csv', 'train', transform=transforms.Resize([720, 1280]))
+    validation_data = WscDataset('test/labeled_data.csv', 'test', transform=transforms.Resize([720, 1280]))
+    training_loader = DataLoader(dataset=training_data, batch_size=4, shuffle=True, num_workers=0)
+    validation_loader = DataLoader(dataset=validation_data, batch_size=4, shuffle=False, num_workers=0)
+
+
+
+if __name__ == '__main__':
+    main()
