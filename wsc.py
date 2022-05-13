@@ -1,4 +1,3 @@
-from re import S
 import torch
 from torchvision.io import read_image
 from torch.utils.data import Dataset, DataLoader
