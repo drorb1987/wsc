@@ -7,10 +7,11 @@ import pandas as pd
 import glob
 import os
 
+
 classes = ['Angle', 'Box', 'Circle', 'Closeup', 'Crowd', 'Other']
 
 transform = transforms.Compose([transforms.Resize([720, 1280]), transforms.ToTensor()])
-training_dataset = torchvision.datasets.ImageFolder(root='./train/', target_transform=transform)
+training_dataset = torchvision.datasets.ImageFolder(root='./train/', transform=transform)
 training_loader = DataLoader(training_dataset, batch_size=len(training_dataset))
 
 # Calculate the mean and std
@@ -28,8 +29,7 @@ normalized_transform = transforms.Compose([
     ])
 
 batch_size = 4
-normalized_training_dataset = torchvision.datasets.ImageFolder(root='./train/', target_transform=normalized_transform)
-normalized_testing_dataset = torchvision.datasets.ImageFolder(root='./test/', target_transform=normalized_transform)
+normalized_training_dataset = torchvision.datasets.ImageFolder(root='./train/', transform=normalized_transform)
+normalized_testing_dataset = torchvision.datasets.ImageFolder(root='./test/', transform=normalized_transform)
 normalized_training_loader = DataLoader(normalized_training_dataset, batch_size=batch_size, shuffle=True)
 normalized_testing_loader = DataLoader(normalized_testing_dataset, batch_size=batch_size, shuffle=False)
-
