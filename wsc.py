@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import glob
 import os
-
+from mobilenet_v2 import MobileNetV2  
 
 classes = ['Angle', 'Box', 'Circle', 'Closeup', 'Crowd', 'Other']
 
@@ -33,3 +33,8 @@ normalized_training_dataset = torchvision.datasets.ImageFolder(root='./train/', 
 normalized_testing_dataset = torchvision.datasets.ImageFolder(root='./test/', transform=normalized_transform)
 normalized_training_loader = DataLoader(normalized_training_dataset, batch_size=batch_size, shuffle=True)
 normalized_testing_loader = DataLoader(normalized_testing_dataset, batch_size=batch_size, shuffle=False)
+
+
+
+
+
