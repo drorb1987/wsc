@@ -12,7 +12,8 @@ from datetime import datetime
 
 CLASSES = ['Angle', 'Box', 'Circle', 'Closeup', 'Crowd', 'Other']
 
-transform = transforms.Compose([transforms.Resize([720, 1280]), transforms.ToTensor()])
+# transform = transforms.Compose([transforms.Resize([720, 1280]), transforms.ToTensor()])
+transform = transforms.Compose([transforms.Resize([224, 224]), transforms.ToTensor()])
 training_dataset = torchvision.datasets.ImageFolder(root='./train/', transform=transform)
 training_loader = DataLoader(training_dataset, batch_size=len(training_dataset))
 
@@ -23,12 +24,18 @@ imgs = images.view(images.size(0), images.size(1), -1)
 mean = imgs.mean(2).sum(0) / imgs.size(0)
 std = imgs.std(2).sum(0) / imgs.size(0)
 
+# mean and std for (720, 1280)
 # mean = torch.tensor([0.3827, 0.4044, 0.3235])
 # std = torch.tensor([0.1845, 0.1861, 0.1851])
 
+# mean and std for (224, 224) size
+# mean = torch.tensor([0.3828, 0.4044, 0.3236])
+# std = torch.tensor([0.1719, 0.1736, 0.1733])
+
 # Normalized dataset
 normalized_transform = transforms.Compose([
-    transforms.Resize([720, 1280]),
+    # transforms.Resize([720, 1280]),
+    transforms.Resize([224, 224]),
     transforms.ToTensor(),
     transforms.Normalize(mean, std)
     ])
@@ -88,7 +95,7 @@ def train_one_epoch(epoch_index, tb_writer):
 
 # Initializing in a separate cell so we can easily add more epochs to the same run
 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-writer = SummaryWriter('runs/fashion_trainer_{}'.format(timestamp))
+writer = SummaryWriter('runs/soccer_trainer_{}'.format(timestamp))
 epoch_number = 0
 
 EPOCHS = 5
